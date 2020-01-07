@@ -31,6 +31,10 @@ To install the Icons plugin:
 
 == Changelog ==
 Changes and feature additions for the Icons plugin:
+= 1.1.0 =
+* Update azurecurve menu for easier maintenance.
+* Move require of azurecurve menu below security check.
+* Add external_link_dark and external_link_light icons.
 = 1.0.0 =
 * First version for ClassicPress forked from azurecurve Icons WordPress Plugin.
 
