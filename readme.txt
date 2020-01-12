@@ -31,6 +31,11 @@ To install the Icons plugin:
 
 == Changelog ==
 Changes and feature additions for the Icons plugin:
+= 1.1.1 =
+* Fix issue with flags not displaying correctly on admin page.
+* Exclude index.php from image listing on admin page.
+* Fix link in localized string and rebuild .pot.
+* Amend sort order of icons to alphabetical order on admin page.
 = 1.1.0 =
 * Update azurecurve menu for easier maintenance.
 * Move require of azurecurve menu below security check.

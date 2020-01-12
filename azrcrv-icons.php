@@ -3,7 +3,7 @@
  * ------------------------------------------------------------------------------
  * Plugin Name: Icons
  * Description: Allows icons to be added to posts and pages using a shortcode.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: azurecurve
  * Author URI: https://development.azurecurve.co.uk/classicpress-plugins/
  * Plugin URI: https://development.azurecurve.co.uk/classicpress-plugins/icons
@@ -149,7 +149,7 @@ function azrcrv_i_settings(){
 		<label for="explanation">
 				<p><?php esc_html_e('Icons allows a 16x16 icon to be displayed in a post or page using the [icon] shortcode.', 'icons'); ?></p>
 				<p><?php esc_html_e('Format of shortcode is [icon=accept] to display the accept icon.', 'icons'); ?></p>
-				<p><?php esc_html_e("Included icons are from the famfamfam Silk icon set 1.3 by Mark James (<a href='http://www.famfamfam.com/lab/icons/silk/'>http://www.famfamfam.com/lab/icons/silk/</a>). Extra icons can be added by simply placing them in PNG format into the /images folder; the filename, without the extension, is the shortcode parameter.", "icons"); ?></p>
+				<p><?php printf(esc_html__("Included icons are from the famfamfam Silk icon set 1.3 by Mark James (%s). Extra icons can be added by simply placing them in PNG format into the /images folder; the filename, without the extension, is the shortcode parameter.", "icons"), "<a href='http://www.famfamfam.com/lab/icons/silk/'>http://www.famfamfam.com/lab/icons/silk/</a>"); ?></p>
 			</label>
 		</label>
 		
@@ -157,16 +157,24 @@ function azrcrv_i_settings(){
 		<?php esc_html_e('Available icons are:', 'icons');
 			
 			$dir = plugin_dir_path(__FILE__).'/images';
+			$images = array();
 			if (is_dir($dir)){
 				if ($directory = opendir($dir)){
 					while (($file = readdir($directory)) !== false){
-						if ($file != '.' and $file != '..' and $file != 'Thumbs.db'){
+						if ($file != '.' and $file != '..' and $file != 'Thumbs.db' and $file != 'index.php'){
 							$filewithoutext = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file);
-							echo "<div style='width: 180px; display: inline-block;'><img src='";
-							echo plugin_dir_url(__FILE__)."images/".esc_html($filewithoutext).".png;' alt='".esc_html($filewithoutext)."' />&nbsp;<em>".esc_html($filewithoutext)."</em></div>";
+							$images[] = $filewithoutext;
 						}
 					}
 					closedir($directory);
+				}
+				asort($images);
+				
+				if ($directory = opendir($dir)){
+					foreach ($images as $image){
+						echo "<div style='width: 180px; display: inline-block;'><img src='";
+						echo plugin_dir_url(__FILE__)."images/".esc_html($image).".png' alt='".esc_html($image)."' />&nbsp;<em>".esc_html($image)."</em></div>";
+					}
 				}
 			}
 			?>
