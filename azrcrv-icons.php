@@ -3,7 +3,7 @@
  * ------------------------------------------------------------------------------
  * Plugin Name: Icons
  * Description: Allows icons to be added to posts and pages using a shortcode.
- * Version: 1.1.1
+ * Version: 1.2.0
  * Author: azurecurve
  * Author URI: https://development.azurecurve.co.uk/classicpress-plugins/
  * Plugin URI: https://development.azurecurve.co.uk/classicpress-plugins/icons
@@ -24,6 +24,10 @@ if (!defined('ABSPATH')){
 
 // include plugin menu
 require_once(dirname( __FILE__).'/pluginmenu/menu.php');
+register_activation_hook(__FILE__, 'azrcrv_create_plugin_menu_i');
+
+// include update client
+require_once(dirname(__FILE__).'/libraries/updateclient/UpdateClient.class.php');
 
 /**
  * Setup actions, filters and shortcodes.
@@ -35,6 +39,7 @@ require_once(dirname( __FILE__).'/pluginmenu/menu.php');
 add_action('admin_menu', 'azrcrv_i_create_admin_menu');
 add_action('wp_enqueue_scripts', 'azrcrv_i_load_css');
 //add_action('the_posts', 'azrcrv_i_check_for_shortcode');
+add_action('plugins_loaded', 'azrcrv_i_load_languages');
 
 // add filters
 add_filter('plugin_action_links', 'azrcrv_i_add_plugin_action_link', 10, 2);
@@ -42,6 +47,17 @@ add_filter('plugin_action_links', 'azrcrv_i_add_plugin_action_link', 10, 2);
 // add shortcodes
 add_shortcode('icon', 'azrcrv_i_icon');
 add_shortcode('ICON', 'azrcrv_i_icon');
+
+/**
+ * Load language files.
+ *
+ * @since 1.0.0
+ *
+ */
+function azrcrv_i_load_languages() {
+    $plugin_rel_path = basename(dirname(__FILE__)).'/languages';
+    load_plugin_textdomain('azrcrv-i', false, $plugin_rel_path);
+}
 
 /**
  * Check if shortcode on current page and then load css and jqeury.
@@ -144,7 +160,7 @@ function azrcrv_i_settings(){
 	}
 	?>
 	<div id="azrcrv-i-general" class="wrap">
-		<h2><?php echo esc_html(get_admin_page_title()); ?></h2>
+		<h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
 		<label for="explanation">
 				<p><?php esc_html_e('Icons allows a 16x16 icon to be displayed in a post or page using the [icon] shortcode.', 'icons'); ?></p>
