@@ -72,7 +72,7 @@ This plugin is developed for ClassicPress, but will likely work on WordPress.
  * Fix link in localized string and rebuild .pot.
  * Amend sort order of icons to alphabetical order on admin page.
 
-### [Version 1.0.1(https://github.com/azurecurve/azrcrv-icons/tree/v1.0.1)
+### [Version 1.0.1](https://github.com/azurecurve/azrcrv-icons/tree/v1.0.1)
  * Update azurecurve menu for easier maintenance.
  * Move require of azurecurve menu below security check.
  * Localization fixes.
