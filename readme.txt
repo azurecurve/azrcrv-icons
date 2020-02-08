@@ -57,27 +57,27 @@ This plugin is developed for ClassicPress, but will likely work on WordPress.
 
 # Changelog
 
-### [Version 1.2.1](https://github.com/azurecurve/azrcrv-icons/tree/v1.2.1)
+### [Version 1.2.1](https://github.com/azurecurve/azrcrv-icons/releases/tag/v1.2.1)
  * Fix bug with incorrect language load text domain.
 
-### [Version 1.2.0](https://github.com/azurecurve/azrcrv-icons/tree/v1.2.0)
+### [Version 1.2.0](https://github.com/azurecurve/azrcrv-icons/releases/tag/v1.2.0)
  * Add integration with Update Manager for automatic updates.
  * Fix issue with display of azurecurve menu.
  * Change settings page heading.
  * Add load_plugin_textdomain to handle translations.
 
-### [Version 1.1.0](https://github.com/azurecurve/azrcrv-icons/tree/v1.1.0)
+### [Version 1.1.0](https://github.com/azurecurve/azrcrv-icons/releases/tag/v1.1.0)
  * Fix issue with flags not displaying correctly on admin page.
  * Exclude index.php from image listing on admin page.
  * Fix link in localized string and rebuild .pot.
  * Amend sort order of icons to alphabetical order on admin page.
 
-### [Version 1.0.1](https://github.com/azurecurve/azrcrv-icons/tree/v1.0.1)
+### [Version 1.0.1](https://github.com/azurecurve/azrcrv-icons/releases/tag/v1.0.1)
  * Update azurecurve menu for easier maintenance.
  * Move require of azurecurve menu below security check.
  * Localization fixes.
 
-### [Version 1.0.0](https://github.com/azurecurve/azrcrv-icons/tree/v1.0.0)
+### [Version 1.0.0](https://github.com/azurecurve/azrcrv-icons/releases/tag/v1.0.0)
  * Initial release for ClassicPress forked from azurecurve Icons WordPress Plugin.
 
 == Other Notes ==
