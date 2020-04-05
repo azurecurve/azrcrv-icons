@@ -1,12 +1,12 @@
 === Icons ===
 
 Description:	Allows a 16x16 icon to be displayed in a post or page using a shortcode.
-Version:		1.2.3
+Version:		1.2.4
 Tags:			icon, icons, posts, pages
 Author:			azurecurve
 Author URI:		https://development.azurecurve.co.uk/
 Plugin URI:		https://development.azurecurve.co.uk/classicpress-plugins/icons/
-Download link:	https://github.com/azurecurve/azrcrv-icons/releases/download/v1.2.3/azrcrv-icons.zip
+Download link:	https://github.com/azurecurve/azrcrv-icons/releases/download/v1.2.4/azrcrv-icons.zip
 Donate link:	https://development.azurecurve.co.uk/support-development/
 Requires PHP:	5.6
 Requires:		1.0.0
@@ -56,6 +56,10 @@ This plugin is developed for ClassicPress, but will likely work on WordPress.
 == Changelog ==
 
 # Changelog
+
+### [Version 1.2.4](https://github.com/azurecurve/azrcrv-icons/releases/tag/v1.2.4)
+ * Fix bug with plugin menu.
+ * Update plugin menu css.
 
 ### [Version 1.2.3](https://github.com/azurecurve/azrcrv-icons/releases/tag/v1.2.3)
  * Upgrade azurecurve plugin to store available plugins in options.
