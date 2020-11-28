@@ -3,7 +3,7 @@
  * ------------------------------------------------------------------------------
  * Plugin Name: Icons
  * Description: Allows icons to be added to posts and pages using a shortcode.
- * Version: 1.3.0
+ * Version: 1.4.0
  * Author: azurecurve
  * Author URI: https://development.azurecurve.co.uk/classicpress-plugins/
  * Plugin URI: https://development.azurecurve.co.uk/classicpress-plugins/icons/
@@ -198,28 +198,13 @@ function azrcrv_i_settings(){
 		
 		<p>
 		<?php esc_html_e('Available icons are:', 'icons');
+			$images = azrcrv_i_get_icons();
 			
-			$dir = plugin_dir_path(__FILE__).'/images';
-			$images = array();
-			if (is_dir($dir)){
-				if ($directory = opendir($dir)){
-					while (($file = readdir($directory)) !== false){
-						if ($file != '.' and $file != '..' and $file != 'Thumbs.db' and $file != 'index.php'){
-							$filewithoutext = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file);
-							$images[] = $filewithoutext;
-						}
-					}
-					closedir($directory);
-				}
-				asort($images);
-				
-				if ($directory = opendir($dir)){
-					foreach ($images as $image){
-						echo "<div style='width: 180px; display: inline-block;'><img src='";
-						echo plugin_dir_url(__FILE__)."images/".esc_html($image).".png' alt='".esc_html($image)."' />&nbsp;<em>".esc_html($image)."</em></div>";
-					}
-				}
+			foreach ($images as $image){
+				echo "<div style='width: 180px; display: inline-block;'><img src='";
+				echo plugin_dir_url(__FILE__)."images/".esc_html($image).".png' alt='".esc_html($image)."' />&nbsp;<em>".esc_html($image)."</em></div>";
 			}
+			
 			?>
 		</p>
 		
@@ -252,6 +237,30 @@ function azrcrv_i_settings(){
 /**
  * Check if function active (included due to standard function failing due to order of load).
  *
+ * @since 1.4.0
+ *
+ */
+function azrcrv_i_get_icons(){
+	$dir = plugin_dir_path(__FILE__).'/images';
+	$images = array();
+	if (is_dir($dir)){
+		if ($directory = opendir($dir)){
+			while (($file = readdir($directory)) !== false){
+				if ($file != '.' and $file != '..' and $file != 'Thumbs.db' and $file != 'index.php'){
+					$filewithoutext = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file);
+					$images[] = $filewithoutext;
+				}
+			}
+			closedir($directory);
+		}
+		asort($images);
+	}
+    return $images;
+}
+
+/**
+ * Check if function active (included due to standard function failing due to order of load).
+ *
  * @since 1.0.0
  *
  */
@@ -264,7 +273,7 @@ function azrcrv_i_is_plugin_active($plugin){
  *
  * @since 1.0.0
  *
-	 */
+*/
 function azrcrv_i_icon($atts, $content = null)
 {
 	if (empty($atts)){
@@ -273,7 +282,16 @@ function azrcrv_i_icon($atts, $content = null)
 		$attribs = implode('',$atts);
 		$icon = trim (trim (trim (trim (trim ($attribs , '=') , '"') , "'") , '&#8217;') , "&#8221;");
 	}
-	return "<img class='azrcrv-i' src='".plugin_dir_url(__FILE__)."images/".esc_html($icon).".png' alt= '".esc_html($icon)."' />";
+	
+	$src = plugin_dir_url(__FILE__).'images/'.esc_html($icon).'.png';
+
+	if (@getimagesize($src)) {
+		$return = "<img class='azrcrv-i' src='$src' alt= '".esc_html($icon)."' />";
+	}else{
+		$return = '';
+	}
+		
+	return $return;
 }
 
 ?>
