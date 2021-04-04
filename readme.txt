@@ -121,7 +121,7 @@ This plugin is developed for ClassicPress, but will likely work on WordPress.
 Some of the top plugins available from **azurecurve** are:
 * [Add Twitter Cards](https://development.azurecurve.co.uk/classicpress-plugins/add-twitter-cards/)
 * [Breadcrumbs](https://development.azurecurve.co.uk/classicpress-plugins/breadcrumbs/)
-* [Series Index](https://development.azurecurve.co.uk/classicpress-plugins/series-index/)
+* [SMTP](https://development.azurecurve.co.uk/classicpress-plugins/smtp/)
 * [To Twitter](https://development.azurecurve.co.uk/classicpress-plugins/to-twitter/)
 * [Theme Switcher](https://development.azurecurve.co.uk/classicpress-plugins/theme-switcher/)
 * [Toggle Show/Hide](https://development.azurecurve.co.uk/classicpress-plugins/toggle-showhide/)
