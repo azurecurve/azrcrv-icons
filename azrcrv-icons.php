@@ -3,7 +3,7 @@
  * ------------------------------------------------------------------------------
  * Plugin Name: Icons
  * Description: Allows icons to be added to posts and pages using a shortcode.
- * Version: 1.5.1
+ * Version: 1.6.0
  * Author: azurecurve
  * Author URI: https://development.azurecurve.co.uk/classicpress-plugins/
  * Plugin URI: https://development.azurecurve.co.uk/classicpress-plugins/icons/
@@ -38,6 +38,7 @@ require_once(dirname(__FILE__).'/libraries/updateclient/UpdateClient.class.php')
 // add actions
 add_action('admin_menu', 'azrcrv_i_create_admin_menu');
 add_action('admin_enqueue_scripts', 'azrcrv_i_load_admin_style');
+add_action('admin_enqueue_scripts', 'azrcrv_i_load_admin_jquery');
 add_action('plugins_loaded', 'azrcrv_i_load_languages');
 add_action('admin_post_azrcrv_i_save_options', 'azrcrv_i_save_options');
 add_action('admin_post_azrcrv_i_upload_image', 'azrcrv_i_upload_image');
@@ -199,16 +200,60 @@ function azrcrv_i_create_admin_menu(){
 }
 
 /**
- * Load css and jquery for icons.
+ * Load admin css.
  *
  * @since 1.5.0
  *
  */
 function azrcrv_i_load_admin_style(){
-    wp_register_style('icons-css', plugins_url('assets/css/admin.css', __FILE__), false, '1.0.0');
-    wp_enqueue_style( 'icons-css' );
 	
-	wp_enqueue_script("icons-admin-js", plugins_url('assets/jquery/jquery.js', __FILE__), array('jquery', 'jquery-ui-core', 'jquery-ui-tabs'));
+	global $pagenow;
+	
+	if ($pagenow == 'admin.php' AND $_GET['page'] == 'azrcrv-i'){
+		wp_register_style('azrcrv-i-admin-css', plugins_url('assets/css/admin.css', __FILE__), false, '1.0.0');
+		wp_enqueue_style('azrcrv-i-admin-css');
+		
+		wp_register_style('azrcrv-i-admin-css-jquery-ui', plugins_url('libraries/jquery-ui/jquery-ui.css', __FILE__), false, '1.0.0');
+		wp_enqueue_style('azrcrv-i-admin-css-jquery-ui');
+		
+		wp_register_style('azrcrv-i-admin-css-jquery-ui-structure', plugins_url('libraries/jquery-ui/jquery-ui.structure.css', __FILE__), false, '1.0.0');
+		wp_enqueue_style('azrcrv-i-admin-css-jquery-ui-structure');
+	}
+}
+
+/**
+ * Load media uploaded.
+ *
+ * @since 1.6.0
+ *
+ */
+function azrcrv_i_load_admin_jquery(){
+	
+	global $pagenow;
+	
+	if ($pagenow == 'admin.php' AND $_GET['page'] == 'azrcrv-i'){
+		wp_enqueue_script('azrcrv-i-admin-jquery', plugins_url('assets/jquery/admin.js', __FILE__), array('jquery'));
+		
+		wp_enqueue_script('azrcrv-i-admin-jquery-ui', plugins_url('libraries/jquery-ui/jquery-ui.js', __FILE__), array('jquery'));
+		wp_enqueue_script('azrcrv-i-admin-jquery-ui-external', plugins_url('libraries/jquery-ui/external/jquery/jquery.js', __FILE__), array('jquery'));
+	}
+}
+
+/**
+ * Get Active Tab to Load.
+ *
+ * @since 1.6.0
+ *
+ */
+function azrcrv_i_get_active_tab(){
+	
+	$saved_options = get_option('azrcrv-i');
+	if (isset($saved_options['folder'])){
+		$tab = '{active: 1}';
+	}else{
+		$tab = '{active: 0}';
+	}
+	return $tab;
 }
 
 /**
@@ -237,138 +282,156 @@ function azrcrv_i_settings(){
 		}else if(isset($_GET['upload-successful'])){
 			echo '<div class="notice notice-success is-dismissible"><p><strong>'.esc_html__('Upload successful.', 'icons').'</strong></p></div>';
 		}else if (isset($_GET['invalid-upload-request'])){
-			echo '<div class="notice notice-error is-dismissible"><p><strong>'.esc_html__('Invaluid upload request; upload failed.', 'icons').'</strong></p></div>';
+			echo '<div class="notice notice-error is-dismissible"><p><strong>'.esc_html__('Invalid upload request; upload failed.', 'icons').'</strong></p></div>';
 		}else if (isset($_GET['settings-updated'])){
 			echo '<div class="notice notice-error is-dismissible"><p><strong>'.esc_html__('Upload failed.', 'icons').'</strong></p></div>';
 		}
 		
-		if (isset($saved_options['folder'])){
-			$showsettings = false;
+		?>
+		
+		<p><?php esc_html_e('Icons allows a 16x16 icon to be displayed in a post or page using the [icon] shortcode.', 'icons'); ?></p>
+		
+	
+	<?php
+	
+	$tab_1_label = esc_html__('Available Icons', 'icons');
+	$tab_1 = '<p>'.sprintf(esc_html__('The Format of the shortcode is %s to display the %s icon; replace the word after the %s with the name from the available icons.', 'icons'), '<strong>[icon=accept]</strong>', '<strong>accept</strong>', '<strong>=</strong>').'</p>';
+	$icons = azrcrv_i_get_icons();
+	foreach ($icons as $icon_id => $icon){
+		if ($icon['type'] == 'standard'){
+			$folder = plugin_dir_url(__FILE__).'assets/images/';
 		}else{
-			$showsettings = true;
+			$folder = $options['url'];
 		}
 		
-		?>
-
-		<label for="explanation">
-				<p><?php esc_html_e('Icons allows a 16x16 icon to be displayed in a post or page using the [icon] shortcode.', 'icons'); ?></p>
-				<p><?php esc_html_e('Format of shortcode is [icon=accept] to display the accept icon.', 'icons'); ?></p>
-				<p><?php printf(esc_html__('Included icons are from the famfamfam Silk icon set 1.3 by Mark James (%s).', 'icons'), '<a href="http://www.famfamfam.com/lab/icons/silk/">http://www.famfamfam.com/lab/icons/silk/</a>'); ?></p>
-			</label>
-		</label>
-		
-		<h2 class="nav-tab-wrapper nav-tab-wrapper-azrcrv-i">
-			<a class="nav-tab <?php if ($showsettings == true){ echo 'nav-tab-active'; } ?>" data-item=".tabs-1" href="#tabs-1"><?php _e('Default Settings', 'icons') ?></a>
-			<a class="nav-tab <?php if ($showsettings == false){ echo 'nav-tab-active'; } ?>" data-item=".tabs-2" href="#tabs-2"><?php _e('Available Icons', 'icons') ?></a>
-			<?php
-			if (isset($saved_options)){
-				echo '<a class="nav-tab" data-item=".tabs-3" href="#tabs-3">'.__('Upload Icon', 'icons').'</a>';
-			}
-			?>
-		</h2>
-
-		<div>
-			<div class="azrcrv_i_tabs <?php if ($showsettings == false){ echo 'invisible'; } ?> tabs-1">
-				<p class="azrcrv_i_horiz">
+		$tab_1 .= '<div class="azrcrv-i"><img style="width: 16px;" src="'.esc_attr($folder).esc_attr($icon_id).'.png'.'" class="azrcrv-i" alt="'.esc_attr($icon_id).'" /> '.esc_attr($icon_id).'</div>';
+	}
+	$tab_1 .= '<p>'.sprintf(esc_html__('Included standard icons are from the famfamfam Silk icon set 1.3 by Mark James (%s).', 'icons'), '<a href="http://www.famfamfam.com/lab/icons/silk/">http://www.famfamfam.com/lab/icons/silk/</a>').'</p>';
+	
+	$tab_2_label = esc_html__('Custom Icon Location', 'icons');
+	$custom_icon_folder_label = esc_html__('Custom Icon Folder', 'icons');
+	$custom_icon_folder = esc_attr($options['folder']);
+	$custom_icon_folder_description = sprintf(esc_html__('Specify the folder where custom icons will be placed; if the folder does not exist, it will be created with %d permissions.', 'icons'), '0755');
+	$custom_icon_url_label = esc_html__('Custom Icon URL', 'icons');
+	$custom_icon_url = esc_attr($options['url']);
+	$custom_icon_url_description = sprintf(esc_html__('Specify the URL for the custom icons folder.', 'icons'), '0755');
+	$tab_2 = "
+					<table class='form-table'>
+						
+						<tr><th scope='row'><label for='folder'>$custom_icon_folder_label</label></th><td>
+							<input name='folder' type='text' id='folder' value='$custom_icon_folder' class='large-text' />
+							<p class='description' id='folder-description'>$custom_icon_folder_description</p></td>
+						</td></tr>
+						
+						<tr><th scope='row'><label for='url'>$custom_icon_url_label</label></th><td>
+							<input name='url' type='text' id='url' value='$custom_icon_url' class='large-text' />
+							<p class='description' id='url-description'>$custom_icon_url_description</p></td>
+						</td></tr>
+						
+					</table>";
+	
+	if (isset($saved_options)){
+		$tab_3_label = esc_html__('Upload Custom Icon', 'icons');
+		$file_format_warning_th = sprintf(esc_html__('Upload files must have an extension of %s', 'icons'), '<strong>png</strong>');
+		$file_upload_th = esc_html__('Select image to upload:', 'icons');
+		$file_upload_td = "<input type='file' name='fileToUpload' id='fileToUpload'>";
+		$tab_3 = "
+					<table class='form-table'>
+						<tr>
+							<th scope='row' colspan=2>
+								$file_format_warning_th
+							</th>
+						</tr>
+						<tr>
+							<th scope='row'>
+								$file_upload_th
+							</th>
+							
+							<td>
+								$file_upload_td
+							</td>
+						</tr>
+					</table>";
+	}
+	?>
+		<div id='azrcrv-tabs'>
+			<ul>
+				<li><a href='#tab-1'><?php echo $tab_1_label; ?></a></li>
+				<li><a href='#tab-2'><?php echo $tab_2_label; ?></a></li>
+				<li><a href='#tab-3'><?php echo $tab_3_label; ?></a></li>
+			</ul>
+			
+			<div id='tab-1'>
+				<fieldset>
+					<legend class='screen-reader-text'>
+						<?php echo $tab_1_label; ?>
+					</legend>
+					<?php echo $tab_1; ?>
+				</fieldset>
+			</div>
+			
+			<div id='tab-2'>
+				<fieldset>
+					<legend class='screen-reader-text'>
+						<?php echo $tab_2_label; ?>
+					</legend>
 					<form method="post" action="admin-post.php">
 						<input type="hidden" name="action" value="azrcrv_i_save_options" />
 						<input name="page_options" type="hidden" value="folder,url" />
-						<table class="form-table">
-							
-							<tr><th scope="row"><label for="folder"><?php esc_html_e('Custom Icon Folder', 'icons'); ?></label></th><td>
-								<input name="folder" type="text" id="folder" value="<?php if (strlen($options['folder']) > 0){ echo stripslashes($options['folder']); } ?>" class="large-text" />
-								<p class="description" id="folder-description"><?php esc_html_e('Specify the folder where custom icons will be placed; if the folder does not exist, it will be created with 0755 permissions.', 'icons'); ?></p></td>
-							</td></tr>
-							
-							<tr><th scope="row"><label for="url"><?php esc_html_e('Custom Icon URL', 'icons'); ?></label></th><td>
-								<input name="url" type="text" id="url" value="<?php if (strlen($options['url']) > 0){ echo stripslashes($options['url']); } ?>" class="large-text" />
-								<p class="description" id="url-description"><?php esc_html_e('Specify the URL for the custom icons folder.', 'icons'); ?></p></td>
-							</td></tr>
-							
-						</table>
-		
+						<?php echo $tab_2; ?>
 						<?php wp_nonce_field('azrcrv-i', 'azrcrv-i-nonce'); ?>
 						<input type="hidden" name="azrcrv_i_data_update" value="yes" />
 						<input type="hidden" name="which_button" value="save_settings" class="short-text" />
 						<input type="submit" value="Save Changes" class="button-primary"/>
 					</form>
-				</p>
+				</fieldset>						
 			</div>
-			
-			<div class="azrcrv_i_tabs <?php if ($showsettings == true){ echo 'invisible'; } ?> tabs-2">
-				<p class="azrcrv_i_horiz">
-		
-				<?php esc_html_e('Available icons are:', 'icons');
-					$icons = azrcrv_i_get_icons();
-					
-					foreach ($icons as $icon_id => $icon){
-						
-						if ($icon['type'] == 'standard'){
-							$folder = plugin_dir_url(__FILE__).'assets/images/';
-						}else{
-							$folder = $options['url'];
-						}
-						
-						echo '<div style="width: 180px; display: inline-block;">';
-							echo '<img style="width: 16px;" src="'.esc_attr($folder).esc_attr($icon_id).'.png'.'" class="azrcrv-i" alt="'.esc_attr($icon_id).'" /> '.esc_attr($icon_id);
-						echo '</div>';
-					}
-					
-					?>
-				</p>
-			</div>
-			
-			<div class="azrcrv_i_tabs invisible tabs-3">
-				<p class="azrcrv_i_horiz">
-					<form method="post" action="admin-post.php" enctype="multipart/form-data">
-					<input type="hidden" name="action" value="azrcrv_i_upload_image" />
-						<table class="form-table">
-						
-							<tr><th scope="row" colspan="2"><?php printf(esc_html__('Upload files must have an extension of %s', 'icons'), '<strong>svg</strong>'); ?></th></tr>
-							
-							<tr><th scope="row"><?php esc_html_e('Select image to upload:', 'icons'); ?></th><td>
-								<input type="file" name="fileToUpload" id="fileToUpload">
-							</td></tr>
-							
-						</table>
-						
-						<input type="hidden" name="which_button" value="upload_image" class="short-text" />
+		<?php if (isset($saved_options)){ ?>
+			<div id='tab-3'>
+				<fieldset>
+					<legend class='screen-reader-text'>
+						<?php echo $tab_3_label; ?>
+					</legend>
+					<form method='post' action='admin-post.php' enctype='multipart/form-data'>
+						<input type='hidden' name='action' value='azrcrv_i_upload_image' />
+						<?php echo $tab_3; ?>
+						<input type='hidden' name='which_button' value='upload_image' class='short-text' />
 						<?php wp_nonce_field('azrcrv-i-image', 'azrcrv-i-image-nonce'); ?>
-						<input type="hidden" name="azrcrv_i_data_update" value="yes" />
-						<input type="submit" value="Upload Image" class="button-primary">
-						
+						<input type='hidden' name='azrcrv_i_data_update' value='yes' />
+						<input type='submit' value='Upload Image' class='button-primary'>
 					</form>
-				</p>
+				</fieldset>
 			</div>
+		<?php } ?>
 		</div>
-	</div>
-	
-	<div>
-		<p>
-			<label for="additional-plugins">
-				azurecurve <?php esc_html_e('has the following plugins which allow shortcodes to be used in comments and widgets:', 'icons'); ?>
-			</label>
-			<ul class='azrcrv-plugin-index'>
-				<li>
-					<?php
-					if (azrcrv_i_is_plugin_active('azrcrv-shortcodes-in-comments/azrcrv-shortcodes-in-comments.php')){
-						echo "<a href='admin.php?page=azrcrv-sic' class='azrcrv-plugin-index'>Shortcodes in Comments</a>";
-					}else{
-						echo "<a href='https://development.azurecurve.co.uk/classicpress-plugins/shortcodes-in-comments/' class='azrcrv-plugin-index'>Shortcodes in Comments</a>";
-					}
-					?>
-				</li>
-				<li>
-					<?php
-					if (azrcrv_i_is_plugin_active('azrcrv-shortcodes-in-widgets/azrcrv-shortcodes-in-widgets.php')){
-						echo "<a href='admin.php?page=azrcrv-siw' class='azrcrv-plugin-index'>Shortcodes in Widgets</a>";
-					}else{
-						echo "<a href='https://development.azurecurve.co.uk/classicpress-plugins/shortcodes-in-widgets/' class='azrcrv-plugin-index'>Shortcodes in Widgets</a>";
-					}
-					?>
-				</li>
-			</ul>
-		</p>
+		
+		<div>
+			<p>
+				<label for="additional-plugins">
+					azurecurve <?php esc_html_e('has the following plugins which allow shortcodes to be used in comments and widgets:', 'icons'); ?>
+				</label>
+				<ul class='azrcrv-plugin-index'>
+					<li>
+						<?php
+						if (azrcrv_i_is_plugin_active('azrcrv-shortcodes-in-comments/azrcrv-shortcodes-in-comments.php')){
+							echo "<a href='admin.php?page=azrcrv-sic' class='azrcrv-plugin-index'>Shortcodes in Comments</a>";
+						}else{
+							echo "<a href='https://development.azurecurve.co.uk/classicpress-plugins/shortcodes-in-comments/' class='azrcrv-plugin-index'>Shortcodes in Comments</a>";
+						}
+						?>
+					</li>
+					<li>
+						<?php
+						if (azrcrv_i_is_plugin_active('azrcrv-shortcodes-in-widgets/azrcrv-shortcodes-in-widgets.php')){
+							echo "<a href='admin.php?page=azrcrv-siw' class='azrcrv-plugin-index'>Shortcodes in Widgets</a>";
+						}else{
+							echo "<a href='https://development.azurecurve.co.uk/classicpress-plugins/shortcodes-in-widgets/' class='azrcrv-plugin-index'>Shortcodes in Widgets</a>";
+						}
+						?>
+					</li>
+				</ul>
+			</p>
+		</div>
 	</div>
 	
 	<?php

@@ -1,9 +1,47 @@
-.azrcrv_i_tabs{
-	padding:15px !important;
+div.azrcrv-i{
+	width: 190px;
+	display: inline-block;
 }
-.azrcrv_i_tabs.invisible{
-	display:none;
+#azrcrv-tabs{
+    background: transparent;
+    border: none;
 }
-.azrcrv_i_horiz{
-	margin:0 0 0 10px;
+#azrcrv-tabs p, #azrcrv-tabs label, #azrcrv-tabs input, #azrcrv-tabs select{
+    font-weight: 400;
+}
+#azrcrv-tabs .ui-widget-header{
+    background: transparent;
+    border: none;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+}
+#azrcrv-tabs .ui-tabs-panel{
+	margin-top: -1px;
+	border: 1px solid grey;
+}
+#azrcrv-tabs .ui-tabs-nav li{
+	padding-left: -2px;
+}
+#azrcrv-tabs .ui-tabs-nav .ui-state-default{
+    background: transparent;
+    border: none;
+}
+#azrcrv-tabs .ui-tabs-nav .ui-state-active{
+    border: none;
+}
+#azrcrv-tabs .ui-tabs-nav .ui-state-default a:hover{
+	border: 1px solid #ff8000;
+	border-bottom: 4px solid #ff8000;
+	color: #ff8000;
+}
+#azrcrv-tabs .ui-tabs-nav .ui-state-default a{
+	border: 1px solid grey;
+	border-bottom: 4px solid grey;
+	color: grey;
+}
+#azrcrv-tabs .ui-tabs-nav .ui-state-active a{
+	border: 1px solid #007FFF;
+	border-bottom: 4px solid #007FFF;
+	color: #007FFF;
 }
