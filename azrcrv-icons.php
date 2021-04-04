@@ -240,23 +240,6 @@ function azrcrv_i_load_admin_jquery(){
 }
 
 /**
- * Get Active Tab to Load.
- *
- * @since 1.6.0
- *
- */
-function azrcrv_i_get_active_tab(){
-	
-	$saved_options = get_option('azrcrv-i');
-	if (isset($saved_options['folder'])){
-		$tab = '{active: 1}';
-	}else{
-		$tab = '{active: 0}';
-	}
-	return $tab;
-}
-
-/**
  * Display Settings page.
  *
  * @since 1.0.0
