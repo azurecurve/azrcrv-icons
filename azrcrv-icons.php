@@ -3,7 +3,7 @@
  * ------------------------------------------------------------------------------
  * Plugin Name: Icons
  * Description: Allows icons to be added to posts and pages using a shortcode.
- * Version: 1.6.0
+ * Version: 1.7.0
  * Author: azurecurve
  * Author URI: https://development.azurecurve.co.uk/classicpress-plugins/
  * Plugin URI: https://development.azurecurve.co.uk/classicpress-plugins/icons/
@@ -175,7 +175,7 @@ function azrcrv_i_add_plugin_action_link($links, $file){
 	}
 
 	if ($file == $this_plugin){
-		$settings_link = '<a href="'.admin_url('admin.php?page=azrcrv-i').'"><img src="'.plugins_url('/pluginmenu/images/Favicon-16x16.png', __FILE__).'" style="padding-top: 2px; margin-right: -5px; height: 16px; width: 16px;" alt="azurecurve" />'.esc_html__('Settings' ,'icons').'</a>';
+		$settings_link = '<a href="'.admin_url('admin.php?page=azrcrv-i').'"><img src="'.plugins_url('/pluginmenu/images/logo.svg', __FILE__).'" style="padding-top: 2px; margin-right: -5px; height: 16px; width: 16px;" alt="azurecurve" />'.esc_html__('Settings' ,'icons').'</a>';
 		array_unshift($links, $settings_link);
 	}
 
@@ -256,27 +256,6 @@ function azrcrv_i_settings(){
 	$options = azrcrv_i_get_option('azrcrv-i');
 	$saved_options = get_option('azrcrv-i');
 	
-	echo '<div id="azrcrv-i-general" class="wrap">';
-	
-		echo '<h1>'.esc_html(get_admin_page_title()).'</h1>';
-		
-		if(isset($_GET['settings-updated'])){
-			echo '<div class="notice notice-success is-dismissible"><p><strong>'.esc_html__('Settings have been saved.', 'icons').'</strong></p></div>';
-		}else if(isset($_GET['upload-successful'])){
-			echo '<div class="notice notice-success is-dismissible"><p><strong>'.esc_html__('Upload successful.', 'icons').'</strong></p></div>';
-		}else if (isset($_GET['invalid-upload-request'])){
-			echo '<div class="notice notice-error is-dismissible"><p><strong>'.esc_html__('Invalid upload request; upload failed.', 'icons').'</strong></p></div>';
-		}else if (isset($_GET['settings-updated'])){
-			echo '<div class="notice notice-error is-dismissible"><p><strong>'.esc_html__('Upload failed.', 'icons').'</strong></p></div>';
-		}
-		
-		?>
-		
-		<p><?php esc_html_e('Icons allows a 16x16 icon to be displayed in a post or page using the [icon] shortcode.', 'icons'); ?></p>
-		
-	
-	<?php
-	
 	$tab_1_label = esc_html__('Available Icons', 'icons');
 	$tab_1 = '<p>'.sprintf(esc_html__('The Format of the shortcode is %s to display the %s icon; replace the word after the %s with the name from the available icons.', 'icons'), '<strong>[icon=accept]</strong>', '<strong>accept</strong>', '<strong>=</strong>').'</p>';
 	$icons = azrcrv_i_get_icons();
@@ -337,14 +316,42 @@ function azrcrv_i_settings(){
 					</table>";
 	}
 	?>
-		<div id='azrcrv-tabs'>
-			<ul>
-				<li><a href='#tab-1'><?php echo $tab_1_label; ?></a></li>
-				<li><a href='#tab-2'><?php echo $tab_2_label; ?></a></li>
-				<li><a href='#tab-3'><?php echo $tab_3_label; ?></a></li>
+	
+	<div id="azrcrv-i-general" class="wrap">
+		<h1>
+			<?php
+				echo '<a href="https://development.azurecurve.co.uk/classicpress-plugins/"><img src="'.plugins_url('/pluginmenu/images/logo.svg', __FILE__).'" style="padding-right: 6px; height: 20px; width: 20px;" alt="azurecurve" /></a>';
+				esc_html_e(get_admin_page_title());
+			?>
+		</h1>
+		
+		<?php
+		if(isset($_GET['settings-updated'])){
+			echo '<div class="notice notice-success is-dismissible"><p><strong>'.esc_html__('Settings have been saved.', 'icons').'</strong></p></div>';
+		}else if(isset($_GET['upload-successful'])){
+			echo '<div class="notice notice-success is-dismissible"><p><strong>'.esc_html__('Upload successful.', 'icons').'</strong></p></div>';
+		}else if (isset($_GET['invalid-upload-request'])){
+			echo '<div class="notice notice-error is-dismissible"><p><strong>'.esc_html__('Invalid upload request; upload failed.', 'icons').'</strong></p></div>';
+		}else if (isset($_GET['settings-updated'])){
+			echo '<div class="notice notice-error is-dismissible"><p><strong>'.esc_html__('Upload failed.', 'icons').'</strong></p></div>';
+		}
+		?>
+		
+		<div id="tabs" class="ui-tabs">
+			<ul class="ui-tabs-nav ui-widget-header" role="tablist">
+				<li class="ui-state-default ui-state-active" aria-controls="tab-panel-1" aria-labelledby="tab-1" aria-selected="true" aria-expanded="true" role="tab">
+					<a id="tab-1" class="ui-tabs-anchor" href="#tab-panel-1"><?php echo $tab_1_label; ?></a>
+				</li>
+				<li class="ui-state-default" aria-controls="tab-panel-2" aria-labelledby="tab-2" aria-selected="false" aria-expanded="false" role="tab">
+					<a id="tab-2" class="ui-tabs-anchor" href="#tab-panel-2"><?php echo $tab_2_label; ?></a>
+				</li>
+				<?php if (isset($saved_options)){ ?>
+					<li class="ui-state-default" aria-controls="tab-panel-3" aria-labelledby="tab-3" aria-selected="false" aria-expanded="false" role="tab">
+						<a id="tab-3" class="ui-tabs-anchor" href="#tab-panel-3"><?php echo $tab_3_label; ?></a>
+					</li>
+				<?php } ?>
 			</ul>
-			
-			<div id='tab-1'>
+			<div id="tab-panel-1" class="ui-tabs-scroll" role="tabpanel" aria-hidden="false">
 				<fieldset>
 					<legend class='screen-reader-text'>
 						<?php echo $tab_1_label; ?>
@@ -352,8 +359,7 @@ function azrcrv_i_settings(){
 					<?php echo $tab_1; ?>
 				</fieldset>
 			</div>
-			
-			<div id='tab-2'>
+			<div id="tab-panel-2" class="ui-tabs-scroll ui-tabs-hidden" role="tabpanel" aria-hidden="true">
 				<fieldset>
 					<legend class='screen-reader-text'>
 						<?php echo $tab_2_label; ?>
@@ -367,9 +373,9 @@ function azrcrv_i_settings(){
 						<input type="hidden" name="which_button" value="save_settings" class="short-text" />
 						<input type="submit" value="Save Changes" class="button-primary"/>
 					</form>
-				</fieldset>						
+				</fieldset>			
 			</div>
-		<?php if (isset($saved_options)){ ?>
+			<?php if (isset($saved_options)){ ?>
 			<div id='tab-3'>
 				<fieldset>
 					<legend class='screen-reader-text'>
@@ -385,7 +391,7 @@ function azrcrv_i_settings(){
 					</form>
 				</fieldset>
 			</div>
-		<?php } ?>
+			<?php } ?>
 		</div>
 		
 		<div>
