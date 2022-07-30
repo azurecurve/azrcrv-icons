@@ -26,7 +26,7 @@ Easily add an icon to a post or page using the `[icon]` shortcode.
 
 For example, to display the note icon, shortcode usage is `[icon=note]`; 1,000 icons from the famfamfam Silk collection are included.
 
-Defintion of icons can be found at [famfamfam.com](http://www.famfamfam.com/lab/icons/silk/); a settings page also shows all available icons.
+Definition of icons can be found at [famfamfam.com](http://www.famfamfam.com/lab/icons/silk/); a settings page also shows all available icons.
 
 Custom cons can be added; if a custom icon with the same name as a standard icon exists, the custom icon will be used.
 
