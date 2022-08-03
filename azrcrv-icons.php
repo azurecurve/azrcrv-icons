@@ -3,7 +3,7 @@
  * ------------------------------------------------------------------------------
  * Plugin Name: Icons
  * Description: Allows icons to be added to posts and pages using a shortcode.
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author: azurecurve
  * Author URI: https://development.azurecurve.co.uk/classicpress-plugins/
  * Plugin URI: https://development.azurecurve.co.uk/classicpress-plugins/icons/
@@ -25,8 +25,14 @@ namespace azurecurve\Icons;
 /**
  * Define constants.
  */
+const DEVELOPER_SHORTNAME = 'azurecurve';
+const DEVELOPER_NAME      = DEVELOPER_SHORTNAME . ' | Development';
+const DEVELOPER_URL_RAW  = 'https://development.azurecurve.co.uk/classicpress-plugins/';
+const DEVELOPER_URL      = '<a href="' . DEVELOPER_URL_RAW . '">' . DEVELOPER_NAME . '</a>';
+
 const PLUGIN_NAME       = 'Icons';
-const PLUGIN_SLUG       = 'azrcrv-icons';
+const PLUGIN_SHORT_SLUG = 'icons';
+const PLUGIN_SLUG       = 'azrcrv-' . PLUGIN_SHORT_SLUG;
 const PLUGIN_HYPHEN     = 'azrcrv-i';
 const PLUGIN_UNDERSCORE = 'azrcrv_i';
 

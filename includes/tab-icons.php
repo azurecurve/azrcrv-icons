@@ -27,7 +27,7 @@ foreach ( $icons as $icon_id => $icon ) {
 	$icon_output .= '<div class="azrcrv-i"><img style="width: 16px;" src="' . esc_attr( $folder ) . esc_attr( $icon_id ) . '.png' . '" class="azrcrv-i" alt="' . $icon_id . '" /> <strong>' . esc_attr( $icon_id ) . '</strong></div>';
 }
 $icon_output  = "<p>$icon_output</p>";
-$icon_output .= '<p>' . sprintf( esc_html__( 'Included standard icons are from the famfamfam Silk icon set 1.3 by Mark James (%s).', 'azrcrv-i' ), '<a href="http://www.famfamfam.com/lab/icons/silk/">http://www.famfamfam.com/lab/icons/silk/</a>' ) . '</p>';
+$icon_output .= '<p>' . sprintf( esc_html__( 'Included standard icons are from the famfamfam Silk icon set 1.3 by Mark James at %s.', 'azrcrv-i' ), '<a href="http://www.famfamfam.com/lab/icons/silk/">famfamfam</a>' ) . '</p>';
 
 $tab_icons_label = esc_html__( 'Available Icons', 'azrcrv-i' );
 $tab_icons       = '

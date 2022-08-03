@@ -46,8 +46,8 @@ if ( ! function_exists( 'azrcrv_display_azurecurve_menu' ) ) {
 		echo '<div id="azrcrv-general" class="wrap">';
 
 			echo '<h1>';
-				echo '<a href="https://development.azurecurve.co.uk/classicpress-plugins/"><img src="' . esc_url_raw( plugins_url( '../assets/images/logo.svg', __FILE__ ) ) . '" style="padding-right: 6px; height: 20px; width: 20px;" alt="azurecurve" /></a>';
-				echo 'azurecurve ClassicPress Plugins';
+				echo '<a href="' . azurecurve\Icons\DEVELOPER_URL_RAW . '"><img src="' . esc_url_raw( plugins_url( '../assets/images/logo.svg', __FILE__ ) ) . '" style="padding-right: 6px; height: 20px; width: 20px;" alt="azurecurve" /></a>';
+				echo azurecurve\Icons\DEVELOPER_SHORTNAME . ' ClassicPress Plugins';
 			echo '</h1>';
 
 			$plugin_array = get_option( 'azrcrv-plugin-menu' );
@@ -84,10 +84,10 @@ if ( ! function_exists( 'azrcrv_display_azurecurve_menu' ) ) {
 						<td scope="row" colspan=2>
 						
 							<p>' .
-								sprintf( esc_html__( '%1$s was one of the first plugin developers to start developing for ClassicPress; all plugins are available from %2$s and are integrated with the %3$s plugin for fully integrated, no hassle, updates.', 'azrcrv-i' ), '<strong>azurecurve | Development</strong>', '<a href="https://development.azurecurve.co.uk/classicpress-plugins/">azurecurve | Development</a>', '<a href="https://directory.classicpress.net/plugins/update-manager/">Update Manager</a>' )
+								sprintf( esc_html__( '%s was one of the first plugin developers to start developing for ClassicPress; all plugins are available from %s and are integrated with the %s plugin for fully integrated, no hassle, updates.', 'azrcrv-i' ), '<strong>' . azurecurve\Icons\DEVELOPER_NAME . '</strong>', azurecurve\Icons\DEVELOPER_URL, '<a href="https://directory.classicpress.net/plugins/update-manager/">Update Manager</a>' )
 							. '</p>
 							<p>' .
-								sprintf( esc_html__( 'The %s plugins active on your site are:', 'azrcrv-i' ), '<strong>azurecurve | Development</strong>' )
+								sprintf( esc_html__( 'The %s plugins active on your site are:', 'azrcrv-i' ), '<strong>' . azurecurve\Icons\DEVELOPER_NAME . '</strong>' )
 							. '</p>
 						
 						</td>
@@ -133,7 +133,7 @@ if ( ! function_exists( 'azrcrv_display_azurecurve_menu' ) ) {
 		}
 
 		if ( $countofplugins == 0 ) {
-			$other_plugins .= sprintf( esc_html__( 'Congratulations! You\'re using all of the %s plugins.', 'azrcrv-i' ), 'azurecurve | Development' );
+			$other_plugins .= sprintf( esc_html__( 'Congratulations! You\'re using all of the %s plugins.', 'azrcrv-i' ), '<strong>' . azurecurve\Icons\DEVELOPER_NAME . '</strong>' );
 		}
 
 			$tab_other = '
@@ -145,7 +145,7 @@ if ( ! function_exists( 'azrcrv_display_azurecurve_menu' ) ) {
 						
 							
 							<p>' .
-								sprintf( esc_html__( 'The other plugins available from %s are:', 'azrcrv-i' ), '<strong>azurecurve | Development</strong>' )
+								sprintf( esc_html__( 'The other plugins available from %s are:', 'azrcrv-i' ), '<strong>' . azurecurve\Icons\DEVELOPER_NAME . '</strong>' )
 							. '</p>
 						
 						</td>
